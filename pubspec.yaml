@@ -1,0 +1,35 @@
+name: traffic
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  url_launcher: ^6.2.4
+  photo_view: ^0.14.0
+  # image_picker: ^1.0.7+5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/police.png"
+
+flutter_lints: ^2.0.0
+flutter_zoom_driver: ^2.1.1  # Corrected this line
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/police.png
+    - assets/next.png
+    - assets/image1.jpg
