@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'AdminQuizInputOnePage.dart'; // AdminQuizInputOnePage хуудсыг импортлох
+import 'package:traffic/answers/AdminQuizInputOnePage.dart';  // Import AdminQuizInputOnePage
 
 class SignInPage extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _obscureText = true;  // Нууц үгийг харуулах эсэхийг хянах хувьсагч
+  bool _obscureText = true;
 
   // Sign-in method
   Future<void> signInWithEmailPassword(String email, String password) async {
@@ -21,8 +21,8 @@ class _SignInPageState extends State<SignInPage> {
         password: password,
       );
       print("User signed in: ${userCredential.user?.email}");
-      
-      // Navigate to AdminQuizInputOnePage if the user is signed in
+
+      // Navigate to HomePage (AdminQuizInputOnePage)
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AdminQuizInputOnePage()),
@@ -30,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
     } catch (e) {
       print("Error signing in: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error signing in. Please try again.")),
+        SnackBar(content: Text("Бүртгэлгүй хэрэглэгч байна.")),
       );
     }
   }
@@ -39,55 +39,107 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign In"),
         centerTitle: true,
+        backgroundColor: Colors.white60,  // App bar background color
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Имэйл орж оруулах талбар
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            // Нууц үг орж оруулах талбар
-            TextField(
-              controller: passwordController,
-              obscureText: _obscureText, // Нууц үгийг харуулах эсэхийг хянах
-              decoration: InputDecoration(
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility_off : Icons.visibility, // Нууц үг харагдуулах/нуух товчлуур
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;  // Нууц үгийг харуулах/нуух үйлдэл
-                    });
-                  },
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.black, width: 2), // Border around the whole container
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // GitHub-like Logo or Icon
+                Icon(
+                  Icons.account_circle, // Example of an icon, you can replace with an actual image if needed
+                  size: 100,
+                  color: Colors.black,
                 ),
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                String email = emailController.text.trim();
-                String password = passwordController.text.trim();
+                SizedBox(height: 40),
 
-                // Имэйл болон нууц үг орсон эсэхийг шалгах
-                if (email.isNotEmpty && password.isNotEmpty) {
-                  await signInWithEmailPassword(email, password);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Please enter both email and password.")),
-                  );
-                }
-              },
-              child: Text("Sign In"),
+                // Email input field with rounded corners and padding
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(color: Colors.black38),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+
+                // Password input field with toggle visibility button
+                TextField(
+                  controller: passwordController,
+                  obscureText: _obscureText,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.grey),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30),
+
+                // Sign In Button with styling
+                ElevatedButton(
+                  onPressed: () async {
+                    String email = emailController.text.trim();
+                    String password = passwordController.text.trim();
+
+                    // Validate email and password
+                    if (email.isNotEmpty && password.isNotEmpty) {
+                      await signInWithEmailPassword(email, password);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Please enter both email and password.")),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,  // Button color
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text("Sign In", style: TextStyle(fontSize: 18)),
+                ),
+                SizedBox(height: 20),
+              ],
             ),
-            SizedBox(height: 20),
-          ],
+          ),
         ),
       ),
     );
