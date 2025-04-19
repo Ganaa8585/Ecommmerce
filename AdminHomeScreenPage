@@ -42,7 +42,7 @@ class _AnswerPageState extends State<AdminHomeScreenPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        leading: MenuWidget(),
+        // leading: MenuWidget(),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
