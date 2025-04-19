@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'AdminQuizInputOnePage.dart'; // Import the page to navigate to
+import 'AdminQuizInputOnePage.dart'; // AdminQuizInputOnePage хуудсыг импортлох
 
 class SignInPage extends StatefulWidget {
   @override
@@ -10,6 +10,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _obscureText = true;  // Нууц үгийг харуулах эсэхийг хянах хувьсагч
 
   // Sign-in method
   Future<void> signInWithEmailPassword(String email, String password) async {
@@ -45,14 +46,28 @@ class _SignInPageState extends State<SignInPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // Имэйл орж оруулах талбар
             TextField(
               controller: emailController,
               decoration: InputDecoration(labelText: 'Email'),
             ),
+            // Нууц үг орж оруулах талбар
             TextField(
               controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: _obscureText, // Нууц үгийг харуулах эсэхийг хянах
+              decoration: InputDecoration(
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility, // Нууц үг харагдуулах/нуух товчлуур
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;  // Нууц үгийг харуулах/нуух үйлдэл
+                    });
+                  },
+                ),
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -60,7 +75,7 @@ class _SignInPageState extends State<SignInPage> {
                 String email = emailController.text.trim();
                 String password = passwordController.text.trim();
 
-                // Check if email and password are provided
+                // Имэйл болон нууц үг орсон эсэхийг шалгах
                 if (email.isNotEmpty && password.isNotEmpty) {
                   await signInWithEmailPassword(email, password);
                 } else {
@@ -72,7 +87,6 @@ class _SignInPageState extends State<SignInPage> {
               child: Text("Sign In"),
             ),
             SizedBox(height: 20),
-            
           ],
         ),
       ),
