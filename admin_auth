@@ -44,6 +44,14 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
+  // Validate email format
+  String? validateEmail(String email) {
+    if (!email.contains('@') || !email.contains('.')) {
+      return 'Имэйл зөв оруулна уу. (Жишээ: example@gmail.com)';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +59,8 @@ class _SignInPageState extends State<SignInPage> {
         centerTitle: true,
         backgroundColor: Colors.white60,  // App bar background color
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.blue[100],  // Set background color of the entire screen to blue
         padding: const EdgeInsets.all(20.0),
         child: Container(
           decoration: BoxDecoration(
@@ -86,6 +95,7 @@ class _SignInPageState extends State<SignInPage> {
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    errorText: validateEmail(emailController.text), // Show error if invalid email
                   ),
                 ),
                 SizedBox(height: 20),
@@ -103,7 +113,7 @@ class _SignInPageState extends State<SignInPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                      borderSide: BorderSide(color: Colors.red),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     suffixIcon: IconButton(
@@ -134,12 +144,12 @@ class _SignInPageState extends State<SignInPage> {
                             await signInWithEmailPassword(email, password);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Please enter both email and password.")),
+                              SnackBar(content: Text("Имэйл болон нууц үгээ оруулна уу.")),
                             );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[100],  // Button color
+                          backgroundColor: Colors.black,  // Button color
                           padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
