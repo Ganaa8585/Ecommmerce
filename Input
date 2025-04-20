@@ -108,6 +108,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
     }
     setState(() => _webImageBytes = null);
     _correctAnswerIndex = null; // Reset the correct answer index
+    answerCheckBoxes.fillRange(0, answerCheckBoxes.length, false); // Reset checkboxes
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Асуултыг амжилттай хадгаллаа!"))
