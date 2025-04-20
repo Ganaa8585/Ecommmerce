@@ -13,20 +13,14 @@ class AdminQuizListOnePage extends StatefulWidget {
 class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
   bool _isLoading = false; // Loading spinner-ийг удирдах хувьсагч
 
-  // Firestore-оос асуултуудыг авах
-  Future<List<Map<String, dynamic>>> fetchQuestions() async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('SmartTrafficInputOneCollection')
-          .get();
-
-      return snapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
-    } catch (e) {
-      print("🔥 Firestore асуулт авах үед алдаа гарлаа: $e");
-      return [];
-    }
+  // Firestore-оос асуултуудыг авах (StreamBuilder ашиглаж байна)
+  Stream<List<Map<String, dynamic>>> fetchQuestions() {
+    return FirebaseFirestore.instance
+        .collection('SmartTrafficInputOneCollection')
+        .snapshots() // Listen to real-time updates
+        .map((snapshot) => snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList());
   }
 
   // Асуултыг устгах
@@ -68,8 +62,8 @@ class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>( // Fetching questions
-        future: fetchQuestions(),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: fetchQuestions(), // Fetch real-time data from Firestore
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator()); // Дата татаж авах үед
