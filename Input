@@ -39,82 +39,89 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   }
 
   Future<void> saveQuestionToFirebase() async {
-    if (_isSaving) return;
+  if (_isSaving) return;
 
-    final user = FirebaseAuth.instance.currentUser;
-    print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
+  final user = FirebaseAuth.instance.currentUser;
+  print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
 
-    setState(() => _isSaving = true);
+  setState(() => _isSaving = true);
 
-    try {
-      // Validate inputs
-      final question = questionController.text.trim();
-      final answers = answerControllers
-          .map((controller) => controller.text.trim())
-          .where((text) => text.isNotEmpty)
-          .toList();
+  try {
+    // Validate inputs
+    final question = questionController.text.trim();
+    final answers = answerControllers
+        .map((controller) => controller.text.trim())
+        .where((text) => text.isNotEmpty)
+        .toList();
 
-      if (question.isEmpty) {
-        throw "Асуулт хоосон байж болохгүй";
-      }
-
-      if (answers.length < 2) {
-        throw "Дор хаяж 2 хариулт өгнө үү";
-      }
-
-      if (_correctAnswerIndex == null) {
-        throw "Зөв хариулт сонгогдоогүй байна";
-      }
-
-      // Upload image if exists
-      String? imageUrl;
-      if (_webImageBytes != null) {
-        imageUrl = await uploadImage(_webImageBytes!);
-        if (imageUrl == null) {
-          throw "Зургийг байршуулж чадсангүй";
-        }
-      }
-
-      // Prepare data
-      final quizData = {
-        "Question": question,
-        "Answer1": answers.isNotEmpty ? answers[0] : "",
-        "Answer2": answers.length > 1 ? answers[1] : "",
-        "Answer3": answers.length > 2 ? answers[2] : "",
-        "Answer4": answers.length > 3 ? answers[3] : "",
-        "Answer5": answers.length > 4 ? answers[4] : "",
-        "CorrectAnswerIndex": _correctAnswerIndex,
-        "Image": imageUrl ?? "",
-        "CreatedAt": FieldValue.serverTimestamp(),
-      };
-
-      // Save to Firestore
-      final docRef = await FirebaseFirestore.instance
-          .collection(quizCollection)
-          .add(quizData);
-
-      debugPrint("Асуултыг ID-аар хадгалсан: ${docRef.id}");
-
-      // Clear form after successful save
-      questionController.clear();
-      for (final controller in answerControllers) {
-        controller.clear();
-      }
-      setState(() => _webImageBytes = null);
-      _correctAnswerIndex = null; // Reset the correct answer index
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Асуултыг амжилттай хадгаллаа!"))
-      );
-    } catch (e) {
-      debugPrint("Хадгалах алдаа: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}"))
-      );
-    } finally {
-      setState(() => _isSaving = false);
+    if (question.isEmpty) {
+      throw "Асуулт хоосон байж болохгүй";
     }
+
+    if (answers.length < 2) {
+      throw "Дор хаяж 2 хариулт өгнө үү";
+    }
+
+    if (_correctAnswerIndex == null) {
+      throw "Зөв хариулт сонгогдоогүй байна";
+    }
+
+    // Upload image if exists
+    String? imageUrl;
+    if (_webImageBytes != null) {
+      imageUrl = await uploadImage(_webImageBytes!);
+      if (imageUrl == null) {
+        throw "Зургийг байршуулж чадсангүй";
+      }
+    }
+
+    // Prepare data
+    final quizData = {
+      "Question": question,
+      "Answer1": answers.isNotEmpty ? answers[0] : "",
+      "Answer2": answers.length > 1 ? answers[1] : "",
+      "Answer3": answers.length > 2 ? answers[2] : "",
+      "Answer4": answers.length > 3 ? answers[3] : "",
+      "Answer5": answers.length > 4 ? answers[4] : "",
+      "CorrectAnswerIndex": _correctAnswerIndex,
+      "Image": imageUrl ?? "",
+      "CreatedAt": FieldValue.serverTimestamp(),
+    };
+
+    // Save to Firestore and get the document ID
+    final docRef = await FirebaseFirestore.instance
+        .collection(quizCollection)
+        .add(quizData);
+
+    final questionId = docRef.id; // Firestore document ID
+    print("🟢 Document ID: $questionId");
+
+    // Add questionId to the saved data
+    await docRef.update({'questionId': questionId});
+
+    debugPrint("Асуултыг ID-аар хадгалсан: ${docRef.id}");
+
+    // Clear form after successful save
+    questionController.clear();
+    for (final controller in answerControllers) {
+      controller.clear();
+    }
+    setState(() => _webImageBytes = null);
+    _correctAnswerIndex = null; // Reset the correct answer index
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Асуултыг амжилттай хадгаллаа!"))
+    );
+  } catch (e) {
+    debugPrint("Хадгалах алдаа: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error: ${e.toString()}"))
+    );
+  } finally {
+    setState(() => _isSaving = false);
   }
+}
+
 
   Future<void> _pickImage() async {
     try {
