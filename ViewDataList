@@ -1,0 +1,144 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:traffic/Pages/EditOneQuestionPage.dart';
+
+class AdminQuizListOnePage extends StatefulWidget {
+  const AdminQuizListOnePage({Key? key}) : super(key: key);
+
+  @override
+  State<AdminQuizListOnePage> createState() => _AdminQuizListOnePagesState();
+}
+
+class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
+  bool _isLoading = false; // Loading spinner-ийг удирдах хувьсагч
+
+  // Firestore-оос асуултуудыг авах
+  Future<List<Map<String, dynamic>>> fetchQuestions() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('SmartTrafficInputOneCollection')
+          .get();
+
+      return snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print("🔥 Firestore асуулт авах үед алдаа гарлаа: $e");
+      return [];
+    }
+  }
+
+  // Асуултыг устгах
+  Future<void> deleteQuestion(String id) async {
+    setState(() {
+      _isLoading = true;  // Устгах үйлдлийн үеийн loading spinner гаргах
+    });
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('SmartTrafficInputOneCollection')
+          .doc(id)
+          .delete();
+
+      setState(() {
+        _isLoading = false;  // Устгах үйлдлийн дараа loading spinner-ийг нуух
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Асуулт амжилттай устгагдлаа!"),
+      ));
+    } catch (e) {
+      setState(() {
+        _isLoading = false;  // Алдаа гарсан тохиолдолд loading spinner-ийг нуух
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Алдаа гарлаа. Асуулт устгах боломжгүй!"),
+      ));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Асуултуудын жагсаалт", style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.blue[100],
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: FutureBuilder<List<Map<String, dynamic>>>( // Fetching questions
+        future: fetchQuestions(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator()); // Дата татаж авах үед
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text("Алдаа гарлаа."));
+          }
+
+          final questions = snapshot.data ?? [];
+
+          return Stack( // Added Stack to overlay the loading indicator
+            children: [
+              ListView.builder(
+                itemCount: questions.length,
+                itemBuilder: (context, index) {
+                  final question = questions[index];
+                  final questionId = question['questionId'] ?? ''; // Firestore document ID
+                  final questionText = question['Question'] ?? 'Асуулт байхгүй'; // Ensure no null value
+                  final answerText = question['Answer1'] ?? 'Хариулт байхгүй'; // Ensure no null value
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0), // Set padding for ListView items
+                    child: Card(
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue[100], // Background color for ListTile (input field like)
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4, spreadRadius: 2),
+                          ],
+                        ),
+                        child: ListTile(
+                          title: Text(questionText),  // Display question
+                          subtitle: Text('Хариултууд: $answerText'),  // Display answer
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => deleteQuestion(questionId), // Асуулт устгах
+                          ),
+                          onTap: () {
+                            // Энд дарж асуулт засах хуудас руу очих
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditOneQuestionPage( // Correct the page name
+                                  questionId: questionId,
+                                  questionData: question,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              if (_isLoading) // Show loading indicator over the list
+                Center(
+                  child: CircularProgressIndicator(), // Loading spinner
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
