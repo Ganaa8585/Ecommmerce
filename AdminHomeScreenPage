@@ -137,78 +137,98 @@ ElevatedButton(
   ),
 ),
             SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => two(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+          ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Механикжсан тээврийн хэрэгслийн-20\nангилал",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      ""
-                      "Механикжсан тээврийн хэрэгслийн-20"
-                      "\nангилал",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
             ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+
             SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Механикжсан тээврийн хэрэгслийн жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
+           ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Механикжсан тээврийн хэрэгслийн жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -494,219 +514,279 @@ ElevatedButton(
               ),
             ),  
              SizedBox(height: 8),
+            ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Замын хөдөлгөөн зохицуулах дохио-40",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
+            ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 8,),
+              ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Замын хөдөлгөөн зохицуулах дохио жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+            SizedBox(height: 8),
+          ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Анхааруулах дохио ба таних дохио-40\nангилал",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
+            ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 8,),
+ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Анхааруулах дохио ба таних дохио жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+
             SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => seven(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Хөдөлгөөн эхлэх болон чиг өөрчлөх-80",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Замын хөдөлгөөн зохицуулах дохио-40",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
             ),
-                         ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Замын хөдөлгөөн зохицуулах дохио жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => eight(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Анхааруулах дохио ба таних дохио-40",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 8,),
+                        ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Хөдөлгөөн эхлэх болон чиг өөрчлөх жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
-                         ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Анхааруулах дохио ба таних дохио жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => nine(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Хөдөлгөөн эхлэх болон чиг өөрчлөх-80",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),
-                         ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Хөдөлгөөн эхлэх болон чиг өөрчлөх жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -743,6 +823,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -777,7 +858,6 @@ ElevatedButton(
                 ),
               ),
             ),  
-             SizedBox(height: 8),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -815,6 +895,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -849,7 +930,6 @@ ElevatedButton(
                 ),
               ),
             ),  
-             SizedBox(height: 8),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -887,6 +967,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -922,7 +1003,6 @@ ElevatedButton(
               ),
             ),  
              SizedBox(height: 8),
-            SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -959,6 +1039,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -994,7 +1075,6 @@ ElevatedButton(
               ),
             ),  
              SizedBox(height: 8),
-            SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -1031,6 +1111,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -1052,7 +1133,7 @@ ElevatedButton(
                   children: [
                     SizedBox(width: 10),
                     Text(
-                      " жагсаалт",
+                      "Уулзвар нэвтрэх жагсаалт",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -1065,7 +1146,6 @@ ElevatedButton(
                 ),
               ),
             ),  
-             SizedBox(height: 8),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -1103,6 +1183,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -1137,7 +1218,6 @@ ElevatedButton(
                 ),
               ),
             ),  
-             SizedBox(height: 8),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -1175,6 +1255,7 @@ ElevatedButton(
                 ),
               ),
             ),
+            SizedBox(height: 8),
                          ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -1210,78 +1291,95 @@ ElevatedButton(
               ),
             ),  
              SizedBox(height: 8),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        seventeen(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
-                ),
+           ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Гадна талын гэрэлтүүлэх хэрэгсэл-10",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Гадна талын гэрэлтүүлэх хэрэглийг\nхэрэглэх-10",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
             ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 8,),
                          ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Гадна талын гэрэлтүүлэх хэрэгсэл жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Гадна талын гэрэлтүүлэх хэрэгсэл жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -1354,78 +1452,97 @@ ElevatedButton(
               ),
             ),  
              SizedBox(height: 8),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        nineteen(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
-                ),
+           ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Механикжсан тээврийн хэрэгслийг чирэх-10",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Механикжсан тээврийн хэрэгслийг\nчирэх-10",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
             ),
-                         ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Механикжсан тээврийн хэрэгслийг чирэх жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 8,),
+                        ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Механикжсан тээврийн хэрэгслийг жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -1498,150 +1615,184 @@ ElevatedButton(
               ),
             ),  
              SizedBox(height: 8),
+            ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Тээврийн хэрэгслийн эвдрэл, гэмтэл, зөрчил-10",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
+            ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 10,),
+                     ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Тээврийн хэрэгслийн эвдрэл, гэмтэл, зөрчил жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        SizedBox(width: 10),
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
             SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        twentytwo(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
-                ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10), // Outer padding
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Зургийн орон зай
+        Image.asset('assets/police.png', width: 36, height: 36),
+
+        SizedBox(width: 10),
+
+        // Текстэнд Expanded + Padding
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              "Тээврийн хэрэгслийг аюулгүй холоодох онол-10",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Тээврийн хэрэгслийн эвдрэл,\nгэмтэл, техникийн зөрчил-20",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis, // Урт текст таслана
             ),
-                         ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Тээврийн хэрэгслийн эвдрэл, гэмтэл, зөрчил жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
-            SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        twentythree(), // Use the correct class name
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
-                    SizedBox(width: 10),
-                    Text(
-                      "Тээврийн хэрэгслийг аюулгүй\nхолоодох онол-10",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(), // Add Spacer to push elements to the left
-                    Image.asset('assets/next.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
+          ),
+        ),
+
+        // Icon
+        Image.asset('assets/next.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
+SizedBox(height: 10,),
+                        ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminQuizListOnePage(), // Quiz List Page
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey.shade900,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Row(
+      children: [
+        // Text-ийг Expanded ашиглаж мөр дүүргэх
+        Expanded(
+          child: Text(
+            "Тээврийн хэрэгслийг аюулгүй холоодох жагсаалт",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
-                         ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminQuizListOnePage(), // Quiz List Page
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(7),
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Text(
-                      "Тээврийн хэрэгслийг аюулгүй холоодох онол жагсаалт",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                    Spacer(),
-                    Image.asset('assets/list.png', width: 24, height: 24),
-                  ],
-                ),
-              ),
-            ),  
-             SizedBox(height: 8),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        SizedBox(width: 10),
+
+        // Icon
+        Image.asset('assets/list.png', width: 24, height: 24),
+      ],
+    ),
+  ),
+),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
