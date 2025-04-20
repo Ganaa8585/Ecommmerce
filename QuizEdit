@@ -1,0 +1,169 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+class EditOneQuestionPage extends StatefulWidget {
+  final String questionId;
+  final Map<String, dynamic> questionData;
+
+  EditOneQuestionPage({
+    required this.questionId,
+    required this.questionData,
+  });
+
+  @override
+  _EditOneQuestionPageState createState() => _EditOneQuestionPageState();
+}
+
+class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
+  final TextEditingController questionController = TextEditingController();
+  final List<TextEditingController> answerControllers = List.generate(5, (_) => TextEditingController());
+  final List<bool> answerCheckBoxes = List.generate(5, (_) => false); // Track selected checkboxes
+  int correctIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    questionController.text = widget.questionData['Question'] ?? '';
+    for (int i = 0; i < 5; i++) {
+      answerControllers[i].text = widget.questionData['Answer${i + 1}'] ?? '';
+    }
+    correctIndex = widget.questionData['CorrectAnswerIndex'] ?? -1;
+
+    // Set checkbox values based on correct index
+    if (correctIndex != -1) {
+      answerCheckBoxes[correctIndex] = true;
+    }
+  }
+
+  Future<void> updateQuestion() async {
+    try {
+      final updatedData = {
+        'Question': questionController.text,
+        'Answer1': answerControllers[0].text,
+        'Answer2': answerControllers[1].text,
+        'Answer3': answerControllers[2].text,
+        'Answer4': answerControllers[3].text,
+        'Answer5': answerControllers[4].text,
+        'CorrectAnswerIndex': correctIndex,
+        'CreatedAt': FieldValue.serverTimestamp(),
+      };
+
+      await FirebaseFirestore.instance
+          .collection('SmartTrafficInputOneCollection')
+          .doc(widget.questionId)
+          .update(updatedData);
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Асуулт амжилттай шинэчлэгдлээ!"),
+      ));
+
+      Navigator.pop(context); // Go back after update
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Шинэчлэх үед алдаа гарлаа!"),
+      ));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Асуулт засах", style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.blue[100],
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: Container(
+        color: Colors.blue[100], // Background color of the body
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Асуулт:", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              SizedBox(height: 8),
+              buildInputField("Асуулт оруулна уу?", questionController),
+              SizedBox(height: 20),
+              Text("Хариултууд:", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              SizedBox(height: 15),
+              ...List.generate(5, (index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: answerControllers[index],
+                          decoration: InputDecoration(
+                            labelText: "Хариулт ${index + 1}",
+                            labelStyle: TextStyle(color: Colors.blue),
+                            border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          ),
+                        ),
+                      ),
+                      Checkbox(
+                        value: answerCheckBoxes[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            // Only allow the checkbox to be selected if the answer field is not empty
+                            if (answerControllers[index].text.trim().isNotEmpty) {
+                              if (value == true) {
+                                // Deselect all checkboxes if new one is checked
+                                for (int i = 0; i < answerCheckBoxes.length; i++) {
+                                  answerCheckBoxes[i] = false;
+                                }
+                                // Select the current checkbox
+                                answerCheckBoxes[index] = true;
+                                correctIndex = index; // Store the index of the correct answer
+                              } else {
+                                answerCheckBoxes[index] = false;
+                                correctIndex = -1; // Reset if unchecked
+                              }
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              SizedBox(height: 20),
+
+              // Save button (Center aligned)
+              Center(
+                child: ElevatedButton(
+                  onPressed: updateQuestion,
+                  child: Text('Шинэчлэх'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildInputField(String label, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: controller.text.isEmpty ? label : null,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        filled: true,
+        fillColor: Colors.grey.shade100,
+      ),
+    );
+  }
+}
