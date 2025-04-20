@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For RawKeyboardListener
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:traffic/Pages/AdminScreenPage.dart';
+import 'package:traffic/Pages/AdminHomeScreenPage.dart';
 import 'package:traffic/Pages/number1.dart';
 
 void main() {
-  runApp(HomeScreenPage());
+  runApp(UserHomeScreenPage());
 }
 
-class HomeScreenPage extends StatefulWidget {
+class UserHomeScreenPage extends StatefulWidget {
   @override
-  State<HomeScreenPage> createState() => _HomeScreenPageState();
+  State<UserHomeScreenPage> createState() => _UserHomeScreenPageState();
 }
 
-class _HomeScreenPageState extends State<HomeScreenPage> {
+class _UserHomeScreenPageState extends State<UserHomeScreenPage> {
   bool isDarkMode = false;
   String selectedLanguage = 'English';
   Color selectedHeaderColor = Colors.orange; // Header-ний өнгө
@@ -342,46 +342,64 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
 
   // Show password dialog
   void _showPasswordDialog(BuildContext context) {
-    final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: TextField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: 'Админ нууц үгээ оруулна уу?',
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            content: TextField(
+              controller: _passwordController,
+              obscureText: !_isPasswordVisible,
+              decoration: InputDecoration(
+                hintText: 'Админ нууц үг',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
+              ),
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                String password = _passwordController.text.trim();
-                if (password == 'Admin123') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminPage()),
-                  );
-                } else {
-                  Navigator.pop(context);
-                  _showErrorDialog(context);
-                }
-              },
-              child: Text('Submit'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close dialog
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+            actions: [
+              TextButton(
+                onPressed: () {
+                  String password = _passwordController.text.trim();
+                  if (password == 'Admin123') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminHomeScreenPage(),
+                      ),
+                    );
+                  } else {
+                    Navigator.pop(context);
+                    _showErrorDialog(context);
+                  }
+                },
+                child: Text('Submit'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close dialog
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+}
+
 
   void _showErrorDialog(BuildContext context) {
     showDialog(
