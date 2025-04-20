@@ -12,14 +12,15 @@ class AdminQuizInputOnePage extends StatefulWidget {
 
 class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   final TextEditingController questionController = TextEditingController();
-  final List<TextEditingController> answerControllers = 
-      List.generate(5, (_) => TextEditingController());
-  Uint8List? _webImageBytes;
+  final List<TextEditingController> answerControllers = List.generate(5, (_) => TextEditingController());
+  final List<bool> answerCheckBoxes = List.generate(5, (_) => false); // Store checkboxes
   bool _isSaving = false;
+  int? _correctAnswerIndex; // Track the index of the correct answer
+  Uint8List? _webImageBytes;
 
   // Constants for Firebase collections
   static const String quizCollection = 'SmartTrafficInputOneCollection';
-  static const String storagePath = 'quizone_images/';
+  static const String storagePath = 'quiz1_images/';
 
   Future<String?> uploadImage(Uint8List imageBytes) async {
     try {
@@ -38,9 +39,10 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   }
 
   Future<void> saveQuestionToFirebase() async {
-    final user = FirebaseAuth.instance.currentUser;
-print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
     if (_isSaving) return;
+
+    final user = FirebaseAuth.instance.currentUser;
+    print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
 
     setState(() => _isSaving = true);
 
@@ -56,8 +58,12 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
         throw "Асуулт хоосон байж болохгүй";
       }
 
-      if (answers.isEmpty) {
-        throw "Дор хаяж нэг хариулт өгнө үү";
+      if (answers.length < 2) {
+        throw "Дор хаяж 2 хариулт өгнө үү";
+      }
+
+      if (_correctAnswerIndex == null) {
+        throw "Зөв хариулт сонгогдоогүй байна";
       }
 
       // Upload image if exists
@@ -77,6 +83,7 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
         "Answer3": answers.length > 2 ? answers[2] : "",
         "Answer4": answers.length > 3 ? answers[3] : "",
         "Answer5": answers.length > 4 ? answers[4] : "",
+        "CorrectAnswerIndex": _correctAnswerIndex,
         "Image": imageUrl ?? "",
         "CreatedAt": FieldValue.serverTimestamp(),
       };
@@ -94,6 +101,7 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
         controller.clear();
       }
       setState(() => _webImageBytes = null);
+      _correctAnswerIndex = null; // Reset the correct answer index
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Асуултыг амжилттай хадгаллаа!"))
@@ -144,7 +152,7 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,  // Center the content
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 1),
 
               // Question input field centered
               TextField(
@@ -155,21 +163,27 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12)
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 8),
 
               const Text("Зураг нэмэх (заавал биш):"),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
 
               // Image upload section
               _webImageBytes != null
                   ? Column(
                       children: [
-                        Image.memory(_webImageBytes!, height: 130, fit: BoxFit.cover),
-                        TextButton(
+                        Image.memory(
+                          _webImageBytes!,
+                          width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+                          height: 170, // Fixed height
+                          fit: BoxFit.cover, // Ensures image stays within the bounds without zooming
+                        ),
+                        IconButton(
                           onPressed: () => setState(() => _webImageBytes = null),
-                          child: const Text("Зургийг устгах"),
+                          icon: Icon(Icons.delete, color: Colors.red),
                         ),
                       ],
                     )
@@ -178,26 +192,56 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
                       icon: const Icon(Icons.image),
                       label: const Text("Зураг сонгоно уу"),
                     ),
-              SizedBox(height: 20),
+
+              SizedBox(height: 5),
 
               // Answer options styled like the question field
               ...List.generate(5, (index) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: TextField(
-                    controller: answerControllers[index],
-                    decoration: InputDecoration(
-                      labelText: "Хариулт ${index + 1}",
-                      labelStyle: TextStyle(color: Colors.blue),
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: answerControllers[index],
+                          decoration: InputDecoration(
+                            labelText: "Хариулт ${index + 1}",
+                            labelStyle: TextStyle(color: Colors.blue),
+                            border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          ),
+                        ),
+                      ),
+                      Checkbox(
+                        value: answerCheckBoxes[index],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            // Only allow the checkbox to be selected if the answer field is not empty
+                            if (answerControllers[index].text.trim().isNotEmpty) {
+                              if (value == true) {
+                                // Deselect all checkboxes if new one is checked
+                                for (int i = 0; i < answerCheckBoxes.length; i++) {
+                                  answerCheckBoxes[i] = false;
+                                }
+                                // Select the current checkbox
+                                answerCheckBoxes[index] = true;
+                                _correctAnswerIndex = index; // Store the index of the correct answer
+                              } else {
+                                answerCheckBoxes[index] = false;
+                                _correctAnswerIndex = null; // Reset if unchecked
+                              }
+                            }
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 );
               }),
 
-              SizedBox(height: 30),
+              SizedBox(height: 15),
 
               // Save button styled like the "START" button
               ElevatedButton(
@@ -210,7 +254,7 @@ print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${us
                   ),
                   side: BorderSide(color: Colors.white, width: 1),  // Border effect
                 ),
-                child: _isSaving 
+                child: _isSaving
                     ? const CircularProgressIndicator()
                     : const Text("Хадгалах", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 15)),
               ),
