@@ -19,7 +19,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
 
   // Constants for Firebase collections
   static const String quizCollection = 'SmartTrafficInputOneCollection';
-  static const String storagePath = 'uploaded_images/';
+  static const String storagePath = 'quizone_images/';
 
   Future<String?> uploadImage(Uint8List imageBytes) async {
     try {
@@ -29,15 +29,17 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
       final snapshot = await uploadTask.whenComplete(() {});
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      debugPrint("Image upload error: $e");
+      debugPrint("Зураг байршуулах алдаа: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to upload image: ${e.toString()}"))
+        SnackBar(content: Text("Зураг байршуулах алдаа: ${e.toString()}"))
       );
       return null;
     }
   }
 
   Future<void> saveQuestionToFirebase() async {
+    final user = FirebaseAuth.instance.currentUser;
+print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
     if (_isSaving) return;
 
     setState(() => _isSaving = true);
@@ -51,11 +53,11 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
           .toList();
 
       if (question.isEmpty) {
-        throw "Question cannot be empty";
+        throw "Асуулт хоосон байж болохгүй";
       }
 
       if (answers.isEmpty) {
-        throw "Please provide at least one answer";
+        throw "Дор хаяж нэг хариулт өгнө үү";
       }
 
       // Upload image if exists
@@ -63,7 +65,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
       if (_webImageBytes != null) {
         imageUrl = await uploadImage(_webImageBytes!);
         if (imageUrl == null) {
-          throw "Failed to upload image";
+          throw "Зургийг байршуулж чадсангүй";
         }
       }
 
@@ -84,7 +86,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
           .collection(quizCollection)
           .add(quizData);
 
-      debugPrint("Quiz saved with ID: ${docRef.id}");
+      debugPrint("Асуултыг ID-аар хадгалсан: ${docRef.id}");
 
       // Clear form after successful save
       questionController.clear();
@@ -94,10 +96,10 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
       setState(() => _webImageBytes = null);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Quiz saved successfully!"))
+        const SnackBar(content: Text("Асуултыг амжилттай хадгаллаа!"))
       );
     } catch (e) {
-      debugPrint("Save error: $e");
+      debugPrint("Хадгалах алдаа: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: ${e.toString()}"))
       );
@@ -125,7 +127,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Question"),
+        title: const Text("Асуулт нэмэх"),
         backgroundColor: Colors.blue[100],  // Blue background for the header
       ),
       body: SingleChildScrollView(
@@ -148,7 +150,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
               TextField(
                 controller: questionController,
                 decoration: InputDecoration(
-                  labelText: "Enter Question",
+                  labelText: "Асуулт оруулна уу?  ",
                   labelStyle: TextStyle(color: Colors.blue),
                   border: OutlineInputBorder(),
                   filled: true,
@@ -157,7 +159,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
               ),
               SizedBox(height: 20),
 
-              const Text("Add Image (optional):"),
+              const Text("Зураг нэмэх (заавал биш):"),
               const SizedBox(height: 10),
 
               // Image upload section
@@ -167,14 +169,14 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                         Image.memory(_webImageBytes!, height: 130, fit: BoxFit.cover),
                         TextButton(
                           onPressed: () => setState(() => _webImageBytes = null),
-                          child: const Text("Delete Image"),
+                          child: const Text("Зургийг устгах"),
                         ),
                       ],
                     )
                   : ElevatedButton.icon(
                       onPressed: _pickImage,
                       icon: const Icon(Icons.image),
-                      label: const Text("Pick Image"),
+                      label: const Text("Зураг сонгоно уу"),
                     ),
               SizedBox(height: 20),
 
@@ -185,7 +187,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                   child: TextField(
                     controller: answerControllers[index],
                     decoration: InputDecoration(
-                      labelText: "Answer ${index + 1}",
+                      labelText: "Хариулт ${index + 1}",
                       labelStyle: TextStyle(color: Colors.blue),
                       border: OutlineInputBorder(),
                       filled: true,
@@ -210,7 +212,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                 ),
                 child: _isSaving 
                     ? const CircularProgressIndicator()
-                    : const Text("Save", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 15)),
+                    : const Text("Хадгалах", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 15)),
               ),
             ],
           ),
