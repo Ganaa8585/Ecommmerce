@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -60,19 +59,19 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
         });
       }
     } catch (e) {
-      debugPrint("Зураг сонгох үед алдаа: $e");
+      debugPrint("📷 Зураг сонгох үед алдаа: $e");
     }
   }
 
-  Future<String?> _uploadImage(Uint8List imageBytes) async {
+  Future<String?> _uploadImage(Uint8List imageBytes, String questionId) async {
     try {
-      final fileName = '\${DateTime.now().millisecondsSinceEpoch}.png';
-      final ref = FirebaseStorage.instance.ref().child('quiz1_images/\$fileName');
+      final fileName = 'quiz1_$questionId.png';
+      final ref = FirebaseStorage.instance.ref().child('quiz1_images/$fileName');
       final uploadTask = ref.putData(imageBytes);
       final snapshot = await uploadTask.whenComplete(() {});
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      debugPrint("Зураг байршуулах алдаа: $e");
+      debugPrint("🖼️ Зураг байршуулах алдаа: $e");
       return null;
     }
   }
@@ -85,12 +84,15 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
     try {
       final question = questionController.text.trim();
       final answers = answerControllers.map((c) => c.text.trim()).toList();
-      final correctAnswer =
-          (correctIndex != -1) ? answers[correctIndex] : "";
+      final correctAnswer = (correctIndex != -1) ? answers[correctIndex] : "";
+
+      if (question.isEmpty) throw "📝 Асуулт хоосон байж болохгүй!";
+      if (answers.length < 2) throw "🔢 Дор хаяж 2 хариулт өгнө үү!";
+      if (correctIndex == -1) throw "✅ Зөв хариулт сонгогдоогүй байна!";
 
       String? finalImageUrl = imageUrl;
       if (_newImageBytes != null) {
-        final uploadedUrl = await _uploadImage(_newImageBytes!);
+        final uploadedUrl = await _uploadImage(_newImageBytes!, widget.questionId);
         if (uploadedUrl != null) finalImageUrl = uploadedUrl;
       }
 
@@ -112,13 +114,13 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
           .update(updatedData);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Асуулт амжилттай шинэчлэгдлээ!")),
+        SnackBar(content: Text("✅ Асуулт амжилттай шинэчлэгдлээ! 🎉")),
       );
 
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Алдаа гарлаа: $e")),
+        SnackBar(content: Text("❌ Алдаа гарлаа: ${e.toString()} 😓")),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -148,16 +150,20 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
             children: [
               TextField(
                 controller: questionController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 decoration: InputDecoration(
-                  labelText: "Асуулт",
+                  labelText: "Асуулт оруулна уу?",
                   labelStyle: TextStyle(color: Colors.blue),
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12)
+                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
+              const Text("Зураг нэмэх (заавал биш):"),
+              const SizedBox(height: 8),
               _newImageBytes != null
                   ? Column(
                       children: [
@@ -193,7 +199,7 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
                           icon: Icon(Icons.image),
                           label: Text("Зураг сонгох"),
                         ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ...List.generate(5, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 5),
@@ -202,13 +208,15 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
                       Expanded(
                         child: TextField(
                           controller: answerControllers[index],
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
                           decoration: InputDecoration(
                             labelText: "Хариулт ${index + 1}",
                             labelStyle: TextStyle(color: Colors.blue),
                             border: OutlineInputBorder(),
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           ),
                         ),
                       ),
@@ -217,16 +225,11 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
                         onChanged: (bool? value) {
                           setState(() {
                             if (answerControllers[index].text.trim().isNotEmpty) {
-                              if (value == true) {
-                                for (int i = 0; i < 5; i++) {
-                                  answerCheckBoxes[i] = false;
-                                }
-                                answerCheckBoxes[index] = true;
-                                correctIndex = index;
-                              } else {
-                                answerCheckBoxes[index] = false;
-                                correctIndex = -1;
+                              for (int i = 0; i < 5; i++) {
+                                answerCheckBoxes[i] = false;
                               }
+                              answerCheckBoxes[index] = value!;
+                              correctIndex = value ? index : -1;
                             }
                           });
                         },
@@ -235,7 +238,7 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
                   ),
                 );
               }),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: _isLoading ? null : updateQuestion,
                 style: ElevatedButton.styleFrom(
