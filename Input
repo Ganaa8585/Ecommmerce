@@ -18,104 +18,111 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   int? _correctAnswer;
   Uint8List? _webImageBytes;
 
-  static const String quizCollection = 'SmartTrafficInputOneCollection';
+  static const String quizCollection = 'TestCollection';
   static const String storagePath = 'quiz1_images/';
 
-  Future<String?> uploadImage(Uint8List imageBytes) async {
+  Future<String?> uploadImage(Uint8List imageBytes, String questionId) async {
     try {
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}.png';
+      final fileName = 'quiz1_$questionId.png';
       final storageRef = FirebaseStorage.instance.ref().child(storagePath + fileName);
       final uploadTask = storageRef.putData(imageBytes);
       final snapshot = await uploadTask.whenComplete(() {});
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
+      debugPrint("🖼️ Зураг байршуулах алдаа: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(content: Text("📷 Зураг сонгох үед алдаа: ${e.toString()} 😢")),
-);
-
-   ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(content: Text("🖼️ Зураг байршуулах алдаа: ${e.toString()} ❗")),
-);
+        SnackBar(content: Text("🖼️ Зураг байршуулах алдаа: ${e.toString()}"))
+      );
       return null;
     }
   }
 
-Future<void> saveQuestionToFirebase() async {
-  if (_isSaving) return;
+  Future<void> saveQuestionToFirebase() async {
+    if (_isSaving) return;
 
-  final user = FirebaseAuth.instance.currentUser;
-  print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
+    final user = FirebaseAuth.instance.currentUser;
+    print("🟢 Хандалт хийх гэж байгаа хэрэглэгч: ${user?.email}");
 
-  setState(() => _isSaving = true);
+    setState(() => _isSaving = true);
 
-  try {
-    // 🔹 Нийт хэдэн асуулт байгааг шалгах
-    final snapshot = await FirebaseFirestore.instance
-        .collection(quizCollection)
-        .get();
-    final quizCount = snapshot.docs.length;
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection(quizCollection)
+          .get();
+      final quizCount = snapshot.docs.length;
 
-    final question = questionController.text.trim();
-    final answers = answerControllers
-        .map((controller) => controller.text.trim())
-        .where((text) => text.isNotEmpty)
-        .toList();
+      final question = questionController.text.trim();
+      final answers = answerControllers
+          .map((controller) => controller.text.trim())
+          .where((text) => text.isNotEmpty)
+          .toList();
 
-    if (question.isEmpty) throw "Асуулт хоосон байж болохгүй";
-    if (answers.length < 2) throw "Дор хаяж 2 хариулт өгнө үү";
-    if (_correctAnswer == null) throw "Зөв хариулт сонгогдоогүй байна";
+      if (question.isEmpty) throw "📝 Асуулт хоосон байж болохгүй!";
+      if (answers.length < 2) throw "🔢 Дор хаяж 2 хариулт өгнө үү!";
+      if (_correctAnswer == null) throw "✅ Зөв хариулт сонгогдоогүй байна!";
 
-    String? imageUrl;
-    if (_webImageBytes != null) {
-      imageUrl = await uploadImage(_webImageBytes!);
-      if (imageUrl == null) throw "Зургийг байршуулж чадсангүй";
-    }
+      String? imageUrl;
 
-    final quizData = {
-      "Question": question,
-      "Answer1": answers.isNotEmpty ? answers[0] : "",
-      "Answer2": answers.length > 1 ? answers[1] : "",
-      "Answer3": answers.length > 2 ? answers[2] : "",
-      "Answer4": answers.length > 3 ? answers[3] : "",
-      "Answer5": answers.length > 4 ? answers[4] : "",
-      "CorrectAnswer": answers[_correctAnswer!],
-      "Image": imageUrl ?? "",
-      "CreatedAt": FieldValue.serverTimestamp(),
-    };
+      final docRef = await FirebaseFirestore.instance
+          .collection(quizCollection)
+          .add({}); // Эхлээд хоосон doc үүсгээд ID-г авна
+      final questionId = docRef.id;
 
-    final docRef = await FirebaseFirestore.instance
-        .collection(quizCollection)
-        .add(quizData);
+      if (_webImageBytes != null) {
+        imageUrl = await uploadImage(_webImageBytes!, questionId);
+        if (imageUrl == null) throw "Зургийг байршуулж чадсангүй";
+      }
 
-    final questionId = docRef.id;
-    await docRef.update({'questionId': questionId});
+      final quizData = {
+        "Question": question,
+        "Answer1": answers.isNotEmpty ? answers[0] : "",
+        "Answer2": answers.length > 1 ? answers[1] : "",
+        "Answer3": answers.length > 2 ? answers[2] : "",
+        "Answer4": answers.length > 3 ? answers[3] : "",
+        "Answer5": answers.length > 4 ? answers[4] : "",
+        "CorrectAnswer": answers[_correctAnswer!],
+        "Image": imageUrl ?? "",
+        "CreatedAt": FieldValue.serverTimestamp(),
+        "questionId": questionId,
+      };
 
-    // 🔹 Form-ийг цэвэрлэх
-    questionController.clear();
-    for (final controller in answerControllers) {
-      controller.clear();
-    }
-    setState(() => _webImageBytes = null);
-    _correctAnswer = null;
-    answerCheckBoxes.fillRange(0, answerCheckBoxes.length, false);
+      await docRef.set(quizData); // quizData-г бүрэн шинэчилж хадгалах
 
-    // 🔹 Амжилтын мэдэгдэлтэй тоо харуулах
-    final successNumber = quizCount + 1;
+      questionController.clear();
+      for (final controller in answerControllers) {
+        controller.clear();
+      }
+      setState(() => _webImageBytes = null);
+      _correctAnswer = null;
+      answerCheckBoxes.fillRange(0, answerCheckBoxes.length, false);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("✅ $successNumber дахь асуулт амжилттай хадгалагдлаа! 🎉"),
+      final successNumber = quizCount + 1;
+
+       ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text(
+      "✅ $successNumber дахь асуулт хадгалагдлаа! 🎉",
+      style: TextStyle( fontSize: 12),
     ),
-    );
-  } catch (e) {
-    debugPrint("Хадгалах алдаа: $e");
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error: ${e.toString()}"))
-    );
-  } finally {
-    setState(() => _isSaving = false);
-  }
-}
+    backgroundColor: Colors.greenAccent, // 🔥 Устгалтын өнгө
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.all(12),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    duration: Duration(seconds: 2),
+  ),
 
+      );
+    } catch (e) {
+      debugPrint("Хадгалах алдаа: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("❌ Алдаа гарлаа: ${e.toString()} 😓"))
+      );
+    } finally {
+      setState(() => _isSaving = false);
+    }
+  }
 
   Future<void> _pickImage() async {
     try {
@@ -127,7 +134,7 @@ Future<void> saveQuestionToFirebase() async {
     } catch (e) {
       debugPrint("Image picker error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to pick image: ${e.toString()}"))
+        SnackBar(content: Text("📷 Зураг сонгох үед алдаа: ${e.toString()} 😢"))
       );
     }
   }
@@ -153,22 +160,20 @@ Future<void> saveQuestionToFirebase() async {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 1),
               TextField(
                 controller: questionController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
-                  labelText: "Асуулт оруулна уу?  ",
+                  labelText: "Асуулт оруулна уу?",
                   labelStyle: TextStyle(color: Colors.blue),
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16
-                  )
+                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 10),
               const Text("Зураг нэмэх (заавал биш):"),
               const SizedBox(height: 8),
               _webImageBytes != null
@@ -191,7 +196,7 @@ Future<void> saveQuestionToFirebase() async {
                       icon: const Icon(Icons.image),
                       label: const Text("Зураг сонгоно уу"),
                     ),
-              SizedBox(height: 5),
+              const SizedBox(height: 10),
               ...List.generate(5, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 5),
@@ -217,16 +222,11 @@ Future<void> saveQuestionToFirebase() async {
                         onChanged: (bool? value) {
                           setState(() {
                             if (answerControllers[index].text.trim().isNotEmpty) {
-                              if (value == true) {
-                                for (int i = 0; i < answerCheckBoxes.length; i++) {
-                                  answerCheckBoxes[i] = false;
-                                }
-                                answerCheckBoxes[index] = true;
-                                _correctAnswer = index;
-                              } else {
-                                answerCheckBoxes[index] = false;
-                                _correctAnswer = null;
+                              for (int i = 0; i < answerCheckBoxes.length; i++) {
+                                answerCheckBoxes[i] = false;
                               }
+                              answerCheckBoxes[index] = value!;
+                              _correctAnswer = value ? index : null;
                             }
                           });
                         },
@@ -235,9 +235,9 @@ Future<void> saveQuestionToFirebase() async {
                   ),
                 );
               }),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton(
-                onPressed: _isSaving ? null : saveQuestionToFirebase, 
+                onPressed: _isSaving ? null : saveQuestionToFirebase,
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50),
                   backgroundColor: Colors.white,
