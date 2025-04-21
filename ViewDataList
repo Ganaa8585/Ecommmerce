@@ -16,7 +16,7 @@ class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
 
   Stream<List<Map<String, dynamic>>> fetchQuestions() {
     return FirebaseFirestore.instance
-        .collection('SmartTrafficInputOneCollection')
+        .collection('TestCollection')
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => doc.data() as Map<String, dynamic>)
@@ -30,7 +30,7 @@ class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
 
     try {
       await FirebaseFirestore.instance
-          .collection('SmartTrafficInputOneCollection')
+          .collection('TestCollection')
           .doc(id)
           .delete();
 
@@ -38,9 +38,22 @@ class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
         _isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Асуулт амжилттай устгагдлаа!"),
-      ));
+   ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text(
+      "🗑️ Асуулт амжилттай устгагдлаа! ✅",
+      style: TextStyle( fontSize: 12),
+    ),
+    backgroundColor: Colors.redAccent, // 🔥 Устгалтын өнгө
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.all(12),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    duration: Duration(seconds: 2),
+  ),
+);
+
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -92,6 +105,7 @@ class _AdminQuizListOnePagesState extends State<AdminQuizListOnePage> {
                       ),
                       child: Container(
                         decoration: BoxDecoration(
+                          
                           color: Colors.blue[100],
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
