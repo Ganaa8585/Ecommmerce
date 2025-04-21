@@ -13,12 +13,11 @@ class AdminQuizInputOnePage extends StatefulWidget {
 class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   final TextEditingController questionController = TextEditingController();
   final List<TextEditingController> answerControllers = List.generate(5, (_) => TextEditingController());
-  final List<bool> answerCheckBoxes = List.generate(5, (_) => false); // Store checkboxes
+  final List<bool> answerCheckBoxes = List.generate(5, (_) => false);
   bool _isSaving = false;
-  int? _correctAnswerIndex; // Track the index of the correct answer
+  int? _correctAnswer;
   Uint8List? _webImageBytes;
 
-  // Constants for Firebase collections
   static const String quizCollection = 'SmartTrafficInputOneCollection';
   static const String storagePath = 'quiz1_images/';
 
@@ -30,15 +29,18 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
       final snapshot = await uploadTask.whenComplete(() {});
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      debugPrint("Зураг байршуулах алдаа: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Зураг байршуулах алдаа: ${e.toString()}"))
-      );
+  SnackBar(content: Text("📷 Зураг сонгох үед алдаа: ${e.toString()} 😢")),
+);
+
+   ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(content: Text("🖼️ Зураг байршуулах алдаа: ${e.toString()} ❗")),
+);
       return null;
     }
   }
 
-  Future<void> saveQuestionToFirebase() async {
+Future<void> saveQuestionToFirebase() async {
   if (_isSaving) return;
 
   final user = FirebaseAuth.instance.currentUser;
@@ -47,35 +49,28 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
   setState(() => _isSaving = true);
 
   try {
-    // Validate inputs
+    // 🔹 Нийт хэдэн асуулт байгааг шалгах
+    final snapshot = await FirebaseFirestore.instance
+        .collection(quizCollection)
+        .get();
+    final quizCount = snapshot.docs.length;
+
     final question = questionController.text.trim();
     final answers = answerControllers
         .map((controller) => controller.text.trim())
         .where((text) => text.isNotEmpty)
         .toList();
 
-    if (question.isEmpty) {
-      throw "Асуулт хоосон байж болохгүй";
-    }
+    if (question.isEmpty) throw "Асуулт хоосон байж болохгүй";
+    if (answers.length < 2) throw "Дор хаяж 2 хариулт өгнө үү";
+    if (_correctAnswer == null) throw "Зөв хариулт сонгогдоогүй байна";
 
-    if (answers.length < 2) {
-      throw "Дор хаяж 2 хариулт өгнө үү";
-    }
-
-    if (_correctAnswerIndex == null) {
-      throw "Зөв хариулт сонгогдоогүй байна";
-    }
-
-    // Upload image if exists
     String? imageUrl;
     if (_webImageBytes != null) {
       imageUrl = await uploadImage(_webImageBytes!);
-      if (imageUrl == null) {
-        throw "Зургийг байршуулж чадсангүй";
-      }
+      if (imageUrl == null) throw "Зургийг байршуулж чадсангүй";
     }
 
-    // Prepare data
     final quizData = {
       "Question": question,
       "Answer1": answers.isNotEmpty ? answers[0] : "",
@@ -83,35 +78,33 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
       "Answer3": answers.length > 2 ? answers[2] : "",
       "Answer4": answers.length > 3 ? answers[3] : "",
       "Answer5": answers.length > 4 ? answers[4] : "",
-      "CorrectAnswerIndex": _correctAnswerIndex,
+      "CorrectAnswer": answers[_correctAnswer!],
       "Image": imageUrl ?? "",
       "CreatedAt": FieldValue.serverTimestamp(),
     };
 
-    // Save to Firestore and get the document ID
     final docRef = await FirebaseFirestore.instance
         .collection(quizCollection)
         .add(quizData);
 
-    final questionId = docRef.id; // Firestore document ID
-    print("🟢 Document ID: $questionId");
-
-    // Add questionId to the saved data
+    final questionId = docRef.id;
     await docRef.update({'questionId': questionId});
 
-    debugPrint("Асуултыг ID-аар хадгалсан: ${docRef.id}");
-
-    // Clear form after successful save
+    // 🔹 Form-ийг цэвэрлэх
     questionController.clear();
     for (final controller in answerControllers) {
       controller.clear();
     }
     setState(() => _webImageBytes = null);
-    _correctAnswerIndex = null; // Reset the correct answer index
-    answerCheckBoxes.fillRange(0, answerCheckBoxes.length, false); // Reset checkboxes
+    _correctAnswer = null;
+    answerCheckBoxes.fillRange(0, answerCheckBoxes.length, false);
+
+    // 🔹 Амжилтын мэдэгдэлтэй тоо харуулах
+    final successNumber = quizCount + 1;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Асуултыг амжилттай хадгаллаа!"))
+      SnackBar(content: Text("✅ $successNumber дахь асуулт амжилттай хадгалагдлаа! 🎉"),
+    ),
     );
   } catch (e) {
     debugPrint("Хадгалах алдаа: $e");
@@ -144,13 +137,13 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Асуулт нэмэх"),
-        backgroundColor: Colors.blue[100],  // Blue background for the header
+        backgroundColor: Colors.blue[100],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.blue[100], // Light blue background for the body
+            color: Colors.blue[100],
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8, spreadRadius: 2),
@@ -158,36 +151,34 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
           ),
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,  // Center the content
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 1),
-
-              // Question input field centered
               TextField(
                 controller: questionController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 decoration: InputDecoration(
                   labelText: "Асуулт оруулна уу?  ",
                   labelStyle: TextStyle(color: Colors.blue),
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12)
+                  contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16
+                  )
                 ),
               ),
               SizedBox(height: 8),
-
               const Text("Зураг нэмэх (заавал биш):"),
               const SizedBox(height: 8),
-
-              // Image upload section
               _webImageBytes != null
                   ? Column(
                       children: [
                         Image.memory(
                           _webImageBytes!,
-                          width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
-                          height: 170, // Fixed height
-                          fit: BoxFit.cover, // Ensures image stays within the bounds without zooming
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          height: 170,
+                          fit: BoxFit.cover,
                         ),
                         IconButton(
                           onPressed: () => setState(() => _webImageBytes = null),
@@ -200,10 +191,7 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                       icon: const Icon(Icons.image),
                       label: const Text("Зураг сонгоно уу"),
                     ),
-
               SizedBox(height: 5),
-
-              // Answer options styled like the question field
               ...List.generate(5, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 5),
@@ -212,13 +200,15 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                       Expanded(
                         child: TextField(
                           controller: answerControllers[index],
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
                           decoration: InputDecoration(
                             labelText: "Хариулт ${index + 1}",
                             labelStyle: TextStyle(color: Colors.blue),
                             border: OutlineInputBorder(),
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           ),
                         ),
                       ),
@@ -226,19 +216,16 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                         value: answerCheckBoxes[index],
                         onChanged: (bool? value) {
                           setState(() {
-                            // Only allow the checkbox to be selected if the answer field is not empty
                             if (answerControllers[index].text.trim().isNotEmpty) {
                               if (value == true) {
-                                // Deselect all checkboxes if new one is checked
                                 for (int i = 0; i < answerCheckBoxes.length; i++) {
                                   answerCheckBoxes[i] = false;
                                 }
-                                // Select the current checkbox
                                 answerCheckBoxes[index] = true;
-                                _correctAnswerIndex = index; // Store the index of the correct answer
+                                _correctAnswer = index;
                               } else {
                                 answerCheckBoxes[index] = false;
-                                _correctAnswerIndex = null; // Reset if unchecked
+                                _correctAnswer = null;
                               }
                             }
                           });
@@ -248,19 +235,16 @@ class _AdminQuizInputOnePageState extends State<AdminQuizInputOnePage> {
                   ),
                 );
               }),
-
               SizedBox(height: 15),
-
-              // Save button styled like the "START" button
               ElevatedButton(
-                onPressed: _isSaving ? null : saveQuestionToFirebase,
+                onPressed: _isSaving ? null : saveQuestionToFirebase, 
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),  // Full width button
-                  backgroundColor: Colors.white,  // Set the color
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  side: BorderSide(color: Colors.white, width: 1),  // Border effect
+                  side: BorderSide(color: Colors.white, width: 1),
                 ),
                 child: _isSaving
                     ? const CircularProgressIndicator()
