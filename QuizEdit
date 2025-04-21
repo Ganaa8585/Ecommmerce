@@ -109,13 +109,25 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
       };
 
       await FirebaseFirestore.instance
-          .collection('SmartTrafficInputOneCollection')
+          .collection('TestCollection')
           .doc(widget.questionId)
           .update(updatedData);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("✅ Асуулт амжилттай шинэчлэгдлээ! 🎉")),
-      );
+       ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text(
+      "✅ Асуулт амжилттай шинэчлэгдлээ! 🎉",
+      style: TextStyle( fontSize: 12),
+    ),
+    backgroundColor: Colors.greenAccent, // 🔥 Устгалтын өнгө
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.all(12),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    duration: Duration(seconds: 2),
+  ),
+       );
 
       Navigator.pop(context);
     } catch (e) {
