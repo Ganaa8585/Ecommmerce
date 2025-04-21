@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -17,35 +16,56 @@ class EditOneQuestionPage extends StatefulWidget {
 
 class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
   final TextEditingController questionController = TextEditingController();
-  final List<TextEditingController> answerControllers = List.generate(5, (_) => TextEditingController());
-  final List<bool> answerCheckBoxes = List.generate(5, (_) => false); // Track selected checkboxes
+  final List<TextEditingController> answerControllers =
+      List.generate(5, (_) => TextEditingController());
+  final List<bool> answerCheckBoxes = List.generate(5, (_) => false);
   int correctIndex = -1;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Set question
     questionController.text = widget.questionData['Question'] ?? '';
+
+    // Set answers
     for (int i = 0; i < 5; i++) {
       answerControllers[i].text = widget.questionData['Answer${i + 1}'] ?? '';
     }
-    correctIndex = widget.questionData['CorrectAnswerIndex'] ?? -1;
 
-    // Set checkbox values based on correct index
+    // Find correct answer index from stored correct answer text
+    final correctAnswerText = widget.questionData['CorrectAnswer'] ?? '';
+    correctIndex = answerControllers.indexWhere(
+      (controller) => controller.text.trim() == correctAnswerText,
+    );
+
     if (correctIndex != -1) {
       answerCheckBoxes[correctIndex] = true;
     }
   }
 
   Future<void> updateQuestion() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
+      final question = questionController.text.trim();
+      final answers = answerControllers.map((c) => c.text.trim()).toList();
+      final correctAnswer =
+          (correctIndex != -1) ? answers[correctIndex] : "";
+
       final updatedData = {
-        'Question': questionController.text,
-        'Answer1': answerControllers[0].text,
-        'Answer2': answerControllers[1].text,
-        'Answer3': answerControllers[2].text,
-        'Answer4': answerControllers[3].text,
-        'Answer5': answerControllers[4].text,
-        'CorrectAnswerIndex': correctIndex,
+        'Question': question,
+        'Answer1': answers[0],
+        'Answer2': answers[1],
+        'Answer3': answers[2],
+        'Answer4': answers[3],
+        'Answer5': answers[4],
+        'CorrectAnswer': correctAnswer,
         'CreatedAt': FieldValue.serverTimestamp(),
       };
 
@@ -58,12 +78,31 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
         content: Text("Асуулт амжилттай шинэчлэгдлээ!"),
       ));
 
-      Navigator.pop(context); // Go back after update
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Шинэчлэх үед алдаа гарлаа!"),
       ));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
+
+  Widget buildInputField(String label, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: controller.text.isEmpty ? label : null,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        filled: true,
+        fillColor: Colors.grey.shade100,
+      ),
+    );
   }
 
   @override
@@ -76,18 +115,21 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Container(
-        color: Colors.blue[100], // Background color of the body
+        color: Colors.blue[100],
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 50),
               Text("Асуулт:", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
               SizedBox(height: 8),
               buildInputField("Асуулт оруулна уу?", questionController),
               SizedBox(height: 20),
               Text("Хариултууд:", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
               SizedBox(height: 15),
+
+              // Хариултууд ба checkbox-ууд
               ...List.generate(5, (index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 15),
@@ -110,20 +152,15 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
                         value: answerCheckBoxes[index],
                         onChanged: (bool? value) {
                           setState(() {
-                            // Only allow the checkbox to be selected if the answer field is not empty
-                            if (answerControllers[index].text.trim().isNotEmpty) {
-                              if (value == true) {
-                                // Deselect all checkboxes if new one is checked
-                                for (int i = 0; i < answerCheckBoxes.length; i++) {
-                                  answerCheckBoxes[i] = false;
-                                }
-                                // Select the current checkbox
-                                answerCheckBoxes[index] = true;
-                                correctIndex = index; // Store the index of the correct answer
-                              } else {
-                                answerCheckBoxes[index] = false;
-                                correctIndex = -1; // Reset if unchecked
+                            if (value == true) {
+                              for (int i = 0; i < answerCheckBoxes.length; i++) {
+                                answerCheckBoxes[i] = false;
                               }
+                              answerCheckBoxes[index] = true;
+                              correctIndex = index;
+                            } else {
+                              answerCheckBoxes[index] = false;
+                              correctIndex = -1;
                             }
                           });
                         },
@@ -132,18 +169,19 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
                   ),
                 );
               }),
-              SizedBox(height: 20),
 
-              // Save button (Center aligned)
+              SizedBox(height: 20),
               Center(
-                child: ElevatedButton(
-                  onPressed: updateQuestion,
-                  child: Text('Шинэчлэх'),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                    backgroundColor: Colors.white,
-                  ),
-                ),
+                child: _isLoading
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: updateQuestion,
+                        child: Text('Шинэчлэх'),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
               ),
             ],
           ),
@@ -152,18 +190,12 @@ class _EditOneQuestionPageState extends State<EditOneQuestionPage> {
     );
   }
 
-  Widget buildInputField(String label, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: controller.text.isEmpty ? label : null,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        filled: true,
-        fillColor: Colors.grey.shade100,
-      ),
-    );
+  @override
+  void dispose() {
+    questionController.dispose();
+    for (var controller in answerControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 }
