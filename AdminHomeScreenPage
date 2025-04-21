@@ -81,7 +81,7 @@ class _AnswerPageState extends State<AdminHomeScreenPage> {
     child: Row(
       children: [
         // Icon for the button
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/1.png', width: 36, height: 36),
         SizedBox(width: 10),
         Text(
           "Нэр томьёоны тодорхойлолт-20",
@@ -111,7 +111,7 @@ ElevatedButton(
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900, // Dark background for this button
+    backgroundColor: Colors.blue[100], // Dark background for this button
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -158,7 +158,7 @@ ElevatedButton(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/2.png', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -197,7 +197,7 @@ ElevatedButton(
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -248,7 +248,7 @@ SizedBox(height: 8),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/3.png', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Жолоочийн үүрэг-30",
@@ -275,7 +275,7 @@ SizedBox(height: 8),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -319,11 +319,11 @@ SizedBox(height: 8),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/4.png', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       """Тусгай дуут болон гэрлэн дохио
- ажилуулсан тээврийн хэрэгслийн
+ажилуулсан тээврийн хэрэгслийн
 хөдөлгөөн-10""",
                       style: TextStyle(
                         color: Colors.black,
@@ -348,7 +348,7 @@ SizedBox(height: 8),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -392,7 +392,7 @@ SizedBox(height: 8),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/5.png', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Замын тэмдэг-120",
@@ -419,7 +419,7 @@ SizedBox(height: 8),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -463,7 +463,7 @@ SizedBox(height: 8),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/6.png', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Замын тэмдэглэл-40",
@@ -489,7 +489,7 @@ SizedBox(height: 8),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -535,7 +535,7 @@ SizedBox(height: 8),
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/7.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -573,7 +573,7 @@ SizedBox(height: 8,),
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -626,7 +626,7 @@ SizedBox(height: 8,),
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/8.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -664,7 +664,7 @@ ElevatedButton(
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -718,7 +718,7 @@ ElevatedButton(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/7.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -756,7 +756,7 @@ SizedBox(height: 8,),
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -807,7 +807,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/8.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Тээврийн хэрэгсэл байрлан явах-80",
@@ -834,7 +834,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -879,7 +879,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/9.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Тээврийн хэрэгслийн хурд-20",
@@ -906,7 +906,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -951,7 +951,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/10.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Гүйцэж түрүүлэх ба гүйцэх-20",
@@ -978,7 +978,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1023,7 +1023,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/11.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Түр ба удаан зогсох-80",
@@ -1050,7 +1050,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1095,7 +1095,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/12.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Уулзвар нэвтрэх-70",
@@ -1122,7 +1122,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1167,7 +1167,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/13.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Явган хүний гарц нэвтрэх-10",
@@ -1194,7 +1194,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1239,7 +1239,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/14.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Төмөр замын гарам нэвтрэх-20",
@@ -1266,7 +1266,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1312,7 +1312,7 @@ SizedBox(height: 8,),
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/15.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -1350,7 +1350,7 @@ SizedBox(height: 8,),
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -1401,7 +1401,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/16.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Хорооллын дотор хөдөлгөөн-10",
@@ -1427,7 +1427,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1473,7 +1473,7 @@ SizedBox(height: 8,),
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/17.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -1511,7 +1511,7 @@ SizedBox(height: 8,),
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -1564,7 +1564,7 @@ SizedBox(height: 8,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/18.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Хүн ба ачаа тээвэрлэх-20",
@@ -1590,7 +1590,7 @@ SizedBox(height: 8,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1636,7 +1636,7 @@ SizedBox(height: 8,),
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/19.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -1674,7 +1674,7 @@ SizedBox(height: 10,),
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -1724,7 +1724,7 @@ SizedBox(height: 10,),
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Зургийн орон зай
-        Image.asset('assets/police.png', width: 36, height: 36),
+        Image.asset('assets/20.webp', width: 36, height: 36),
 
         SizedBox(width: 10),
 
@@ -1762,7 +1762,7 @@ SizedBox(height: 10,),
     );
   },
   style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.grey.shade900,
+    backgroundColor: Colors.blue[100],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -1814,7 +1814,7 @@ SizedBox(height: 10,),
                 padding: const EdgeInsets.all(7),
                 child: Row(
                   children: [
-                    Image.asset('assets/police.png', width: 36, height: 36),
+                    Image.asset('assets/24.webp', width: 36, height: 36),
                     SizedBox(width: 10),
                     Text(
                       "Эмнэлгийн анхны тусламж-10",
@@ -1841,7 +1841,7 @@ SizedBox(height: 10,),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Colors.blue[100],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
