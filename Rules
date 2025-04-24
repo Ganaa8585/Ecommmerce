@@ -2,13 +2,186 @@ FireStore Database
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+  
     match /SmartTrafficInputOneCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com"
+            	|| request.auth.token.email == "test@gmail.com" );
+    }
+    
+     match /SmartTrafficInputTwoCollection/{docId} {
       allow read, write: if request.auth != null 
         && (request.auth.token.email == "slmndeveloper8@gmail.com" 
             || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
     }
+    
+     match /SmartTrafficInputThreeCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputFourCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputFiveCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputSixCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputSevenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputEightCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputNineCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+     match /SmartTrafficInputTenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputElevenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputTwelveCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputThirteenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputFourteenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputFifteenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputSixteenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputSeventeenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputEighteenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputNineteenCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputTwentyCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputTwentyOneCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputTwentyTwoCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputTwentyThreeCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /SmartTrafficInputTwentyFourCollection/{docId} {
+      allow read, write: if request.auth != null 
+        && (request.auth.token.email == "slmndeveloper8@gmail.com" 
+            || request.auth.token.email == "ganhuyagtumenbayar2@gmail.com");
+    }
+    
+    match /TestCollection/{docId} {
+      allow read, write: if true; // 👈 унших боломжтой
+    }
+    
+     match /UserList/{docId} {
+      allow read, write: if true; // 👈 унших боломжтой
+    }
+    
+     match /SmartTrafficInputOneCollection/{docId} {
+      allow read, write: if true; // 👈 унших боломжтой
+    }
+
+    match /WrongAnswerTestCollection/{docId} {
+      allow write, read: if true; // 👈 бичих боломжтой
+    }
+    
+      match /saveExamResults/{docId} {
+      allow write, read: if true; // 👈 бичих боломжтой
+    }
+    
+     match /Test1Collection/{docId} {
+      allow read, write: if true; // 👈 унших боломжтой
+    }
+
+    match /WrongAnswerTest1Collection/{docId} {
+      allow write, read: if true; // 👈 бичих боломжтой
+    }
+    
+     match /SaveExamRules/{docId} {
+      allow write, read: if true; // 👈 бичих боломжтой
+    }
   }
 }
+
 
 
 Storage
